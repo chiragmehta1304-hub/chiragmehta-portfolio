@@ -1,2 +1,2 @@
 # chiragmehta-portfolio
-Chirag Mehta Web3 Portfoilio
+Chirag Mehta Web3 Portfolio
