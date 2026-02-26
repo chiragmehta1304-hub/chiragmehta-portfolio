@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chirag Mehta — Crypto Research Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #111118; --surface2: #18181f;
+    --border: rgba(255,255,255,0.07); --accent: #f0c040; --accent2: #3df0a0;
+    --accent3: #f05050; --text: #e8e8f0; --muted: #7070a0; --card-hover: rgba(240,192,64,0.04);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+  .grid-bg { position: fixed; inset: 0; background-image: linear-gradient(rgba(240,192,64,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(240,192,64,0.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+  .orb { position: fixed; border-radius: 50%; filter: blur(100px); pointer-events: none; opacity: 0.15; }
+  .orb-1 { width: 600px; height: 600px; background: #f0c040; top: -200px; right: -200px; }
+  .orb-2 { width: 400px; height: 400px; background: #3df0a0; bottom: 20%; left: -150px; }
+  .orb-3 { width: 300px; height: 300px; background: #f05050; bottom: -100px; right: 30%; opacity: 0.08; }
+
+  /* SIDEBAR */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: rgba(17,17,24,0.95); border-right: 1px solid var(--border); backdrop-filter: blur(20px); padding: 32px 0; z-index: 100; display: flex; flex-direction: column; animation: slideInLeft 0.6s ease forwards; overflow-y: auto; }
+  @keyframes slideInLeft { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  .sidebar-logo { padding: 0 24px 28px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .sidebar-logo .name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--accent); }
+  .sidebar-logo .role { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+  .nav-section { padding: 0 12px; flex: 1; }
+  .nav-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); padding: 0 12px 8px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-radius: 6px; font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.2s; text-decoration: none; margin-bottom: 2px; }
+  .nav-item:hover, .nav-item.active { background: rgba(240,192,64,0.08); color: var(--accent); }
+  .nav-item .icon { font-size: 13px; width: 18px; text-align: center; }
+  .sidebar-footer { padding: 16px 24px 0; border-top: 1px solid var(--border); margin-top: auto; }
+  .contact-link { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); text-decoration: none; margin-bottom: 7px; transition: color 0.2s; }
+  .contact-link:hover { color: var(--accent); }
+
+  /* MAIN */
+  .main { margin-left: 240px; min-height: 100vh; }
+
+  /* HERO */
+  .hero { padding: 80px 64px 60px; border-bottom: 1px solid var(--border); position: relative; animation: fadeUp 0.7s ease forwards; }
+  @keyframes fadeUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .hero-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(240,192,64,0.1); border: 1px solid rgba(240,192,64,0.2); color: var(--accent); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 28px; }
+  .hero-tag .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+  .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 6vw, 80px); letter-spacing: 3px; line-height: 0.95; margin-bottom: 24px; }
+  .hero h1 .line2 { color: var(--accent); display: block; }
+  .hero h1 .line1 { display: block; }
+  .hero-desc { max-width: 620px; font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 36px; }
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+  .hero-stats { display: flex; gap: 48px; flex-wrap: wrap; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 1px; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
+
+  /* SECTIONS */
+  .section { padding: 56px 64px; border-bottom: 1px solid var(--border); }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
+  .section-icon { width: 36px; height: 36px; background: rgba(240,192,64,0.1); border: 1px solid rgba(240,192,64,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 26px; letter-spacing: -0.3px; }
+  .section-count { margin-left: auto; font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; background: var(--surface2); padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border); }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .about-text { grid-column: 1 / -1; font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 8px; }
+  .about-text strong { color: var(--text); }
+  .highlight-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; transition: all 0.3s; }
+  .highlight-card:hover { border-color: rgba(240,192,64,0.2); background: var(--card-hover); }
+  .highlight-card h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 8px; }
+  .highlight-card p { font-size: 14px; color: var(--text); }
+
+  /* PROOF OF WORK — PNL */
+  .pnl-banner {
+    background: linear-gradient(135deg, rgba(61,240,160,0.06), rgba(240,192,64,0.04));
+    border: 1px solid rgba(61,240,160,0.2);
+    border-radius: 16px; padding: 32px; margin-bottom: 28px;
+    display: flex; align-items: center; gap: 40px; flex-wrap: wrap;
+  }
+  .pnl-arrow { font-size: 40px; color: var(--accent2); }
+  .pnl-stat { text-align: center; }
+  .pnl-value { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 1px; line-height: 1; }
+  .pnl-value.from { color: var(--muted); }
+  .pnl-value.to { color: var(--accent2); }
+  .pnl-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
+  .pnl-badge { background: rgba(61,240,160,0.1); border: 1px solid rgba(61,240,160,0.25); color: var(--accent2); font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; padding: 10px 20px; border-radius: 10px; }
+  .pnl-desc { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; min-width: 200px; }
+  .pnl-desc strong { color: var(--text); }
+
+  .screenshots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+  .screenshot-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.3s; }
+  .screenshot-card:hover { border-color: rgba(61,240,160,0.25); transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,0.4); }
+  .screenshot-card img { width: 100%; display: block; object-fit: cover; max-height: 420px; object-position: top; }
+  .screenshot-label { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
+  .screenshot-label span { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .screenshot-label .badge { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 10px; border-radius: 100px; }
+  .badge-red { background: rgba(240,80,80,0.1); border: 1px solid rgba(240,80,80,0.2); color: var(--accent3); }
+  .badge-green { background: rgba(61,240,160,0.1); border: 1px solid rgba(61,240,160,0.2); color: var(--accent2); }
+
+  /* TESTIMONIALS */
+  .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .testimonial-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; transition: all 0.3s; position: relative; }
+  .testimonial-card:hover { border-color: rgba(240,192,64,0.2); transform: translateY(-2px); }
+  .testimonial-card::before { content: '"'; position: absolute; top: 12px; right: 16px; font-family: 'DM Serif Display', serif; font-size: 48px; color: rgba(240,192,64,0.08); line-height: 1; }
+  .testimonial-text { font-size: 13px; color: var(--text); line-height: 1.7; margin-bottom: 14px; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 10px; }
+  .testimonial-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #0a0a0f; flex-shrink: 0; }
+  .testimonial-name { font-size: 12px; font-weight: 500; color: var(--accent); font-family: 'DM Mono', monospace; }
+  .testimonial-context { font-size: 11px; color: var(--muted); }
+
+  .testimonial-screenshot { background: var(--surface); border: 1px solid rgba(240,192,64,0.15); border-radius: 14px; overflow: hidden; margin-top: 0; }
+  .testimonial-screenshot img { width: 100%; display: block; border-radius: 14px; }
+  .testimonial-screenshot-label { padding: 14px 20px; font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; border-top: 1px solid var(--border); }
+
+  /* DISCORD + RESOURCES */
+  .resources-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .resource-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.3s; text-decoration: none; display: flex; flex-direction: column; gap: 12px; }
+  .resource-card:hover { border-color: rgba(240,192,64,0.25); transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,0.4); }
+  .resource-icon { font-size: 28px; }
+  .resource-tag { display: inline-block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; width: fit-content; }
+  .resource-tag.discord { background: rgba(88,101,242,0.1); border: 1px solid rgba(88,101,242,0.25); color: #7289da; }
+  .resource-tag.x { background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.2); color: var(--accent); }
+  .resource-tag.drive { background: rgba(61,240,160,0.08); border: 1px solid rgba(61,240,160,0.2); color: var(--accent2); }
+  .resource-title { font-size: 15px; font-weight: 500; color: var(--text); }
+  .resource-desc { font-size: 12px; color: var(--muted); line-height: 1.6; flex: 1; }
+  .resource-cta { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); margin-top: 4px; transition: color 0.2s; }
+  .resource-card:hover .resource-cta { color: var(--accent); }
+
+  /* X SOCIAL */
+  .x-accounts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .x-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.3s; text-decoration: none; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+  .x-card::after { content: '𝕏'; position: absolute; right: 18px; top: 14px; font-size: 24px; color: rgba(255,255,255,0.04); font-weight: 900; }
+  .x-card:hover { border-color: rgba(240,192,64,0.3); transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,0.5); }
+  .x-card:hover::after { color: rgba(240,192,64,0.1); }
+  .x-handle { font-family: 'DM Mono', monospace; font-size: 15px; color: var(--accent); font-weight: 500; }
+  .x-role-tag { display: inline-block; background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.15); color: var(--accent); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; width: fit-content; }
+  .x-desc { font-size: 12px; color: var(--muted); line-height: 1.65; flex: 1; }
+  .x-cta { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 4px; transition: color 0.2s; }
+  .x-card:hover .x-cta { color: var(--accent); }
+
+  /* WRITING NOTE */
+  .writing-note { background: rgba(240,192,64,0.05); border: 1px solid rgba(240,192,64,0.15); border-radius: 10px; padding: 14px 20px; font-size: 13px; color: var(--muted); margin-bottom: 28px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+  .writing-note strong { color: var(--accent); }
+
+  /* ARTICLES */
+  .articles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .article-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+  .article-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .article-card:hover::before { transform: scaleX(1); }
+  .article-card:hover { border-color: rgba(240,192,64,0.2); transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .article-type { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .article-type.breaking { color: var(--accent3); }
+  .article-type.analysis { color: var(--accent); }
+  .article-type.defi { color: var(--accent2); }
+  .article-type.macro { color: #a0a0f0; }
+  .article-card h3 { font-family: 'DM Serif Display', serif; font-size: 18px; line-height: 1.35; margin-bottom: 12px; color: var(--text); }
+  .article-card > p { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
+  .article-meta { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; padding-top: 16px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+  .expand-btn { font-size: 11px; color: var(--accent); cursor: pointer; font-family: 'DM Mono', monospace; letter-spacing: 1px; }
+  .article-link-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--accent2); font-family: 'DM Mono', monospace; text-decoration: none; background: rgba(61,240,160,0.06); border: 1px solid rgba(61,240,160,0.15); padding: 3px 10px; border-radius: 100px; transition: opacity 0.2s; }
+  .article-link-btn:hover { opacity: 0.7; }
+  .sample-content { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .article-card.expanded .sample-content { display: block; }
+
+  /* ONCHAIN */
+  .onchain-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.3s; }
+  .metric-card:hover { border-color: rgba(61,240,160,0.2); }
+  .metric-value { font-family: 'DM Mono', monospace; font-size: 22px; color: var(--accent2); margin-bottom: 4px; }
+  .metric-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .metric-change { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--accent2); margin-top: 4px; }
+  .metric-change.down { color: var(--accent3); }
+  .framework-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .framework-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; gap: 16px; align-items: flex-start; transition: all 0.3s; }
+  .framework-item:hover { border-color: rgba(240,192,64,0.15); background: var(--card-hover); }
+  .framework-num { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: rgba(240,192,64,0.2); line-height: 1; min-width: 36px; }
+  .framework-content h4 { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+  .framework-content p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* TOOLS */
+  .tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .tool-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; transition: all 0.3s; }
+  .tool-item:hover { border-color: rgba(240,192,64,0.2); transform: translateY(-2px); }
+  .tool-icon { font-size: 24px; margin-bottom: 8px; }
+  .tool-name { font-size: 12px; font-family: 'DM Mono', monospace; color: var(--text); margin-bottom: 4px; }
+  .tool-cat { font-size: 10px; color: var(--muted); }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .skill-category { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; transition: all 0.3s; }
+  .skill-category:hover { border-color: rgba(240,192,64,0.15); transform: translateY(-2px); }
+  .skill-cat-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 14px; }
+  .skill-tag { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 12px; font-family: 'DM Mono', monospace; color: var(--text); margin: 3px 3px 3px 0; transition: all 0.2s; }
+  .skill-tag:hover { background: rgba(240,192,64,0.08); border-color: rgba(240,192,64,0.2); color: var(--accent); }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 24px; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, var(--accent), transparent); }
+  .timeline-item { position: relative; padding-left: 28px; margin-bottom: 36px; }
+  .timeline-item::before { content: ''; position: absolute; left: -28px; top: 8px; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 12px var(--accent); }
+  .timeline-date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 1px; margin-bottom: 6px; }
+  .timeline-role { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+  .timeline-org { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .timeline-bullets li { font-size: 13px; color: var(--muted); display: flex; gap: 8px; }
+  .timeline-bullets li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+
+  /* CTA */
+  .cta-section { padding: 64px; text-align: center; }
+  .cta-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; margin-bottom: 16px; }
+  .cta-section p { color: var(--muted); font-size: 15px; margin-bottom: 32px; }
+  .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--accent); color: #0a0a0f; padding: 14px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Outfit', sans-serif; text-decoration: none; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(240,192,64,0.25); }
+  .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); padding: 14px 28px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.2s; font-family: 'Outfit', sans-serif; text-decoration: none; }
+  .btn-secondary:hover { border-color: rgba(240,192,64,0.3); color: var(--accent); }
+  .btn-x { background: var(--surface); color: var(--muted); border: 1px solid var(--border); padding: 14px 18px; border-radius: 8px; font-size: 13px; cursor: pointer; transition: all 0.2s; font-family: 'DM Mono', monospace; text-decoration: none; }
+  .btn-x:hover { border-color: rgba(240,192,64,0.25); color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .hero, .section { padding: 40px 24px; }
+    .articles-grid, .about-grid, .skills-grid, .framework-list, .x-accounts-grid, .screenshots-grid, .testimonials-grid, .resources-grid { grid-template-columns: 1fr; }
+    .onchain-grid, .tools-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-stats { gap: 28px; }
+    .cta-section { padding: 40px 24px; }
+    .pnl-banner { gap: 20px; }
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(240,192,64,0.2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="name">CHIRAG MEHTA</div>
+    <div class="role">Research Analyst · Web3</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Portfolio</div>
+    <a href="#about" class="nav-item active"><span class="icon">◈</span> About</a>
+    <a href="#proof" class="nav-item"><span class="icon">💹</span> Proof of Work</a>
+    <a href="#social" class="nav-item"><span class="icon">𝕏</span> Social Presence</a>
+    <a href="#writing" class="nav-item"><span class="icon">✦</span> Writing Samples</a>
+    <a href="#onchain" class="nav-item"><span class="icon">⬡</span> On-Chain Analysis</a>
+    <a href="#tools" class="nav-item"><span class="icon">▣</span> Tools & Stack</a>
+    <a href="#experience" class="nav-item"><span class="icon">◐</span> Experience</a>
+    <a href="#contact" class="nav-item"><span class="icon">◌</span> Contact</a>
+  </div>
+  <div class="sidebar-footer">
+    <a href="mailto:chiragmehta1304@gmail.com" class="contact-link">✉ chiragmehta1304@gmail.com</a>
+    <a href="https://www.linkedin.com/in/chiragmehta1304/" target="_blank" class="contact-link">⌘ LinkedIn</a>
+    <a href="https://discord.gg/AS5eJkUven" target="_blank" class="contact-link">◈ Discord Community</a>
+    <a href="https://x.com/NM_Founder" target="_blank" class="contact-link">𝕏 @NM_Founder</a>
+    <a href="https://x.com/NM_ALPHA" target="_blank" class="contact-link">𝕏 @NM_ALPHA</a>
+    <a href="https://x.com/HarryDemitry" target="_blank" class="contact-link">𝕏 @HarryDemitry</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- HERO -->
+  <section class="hero" id="about">
+    <div class="hero-tag"><div class="dot"></div>Available for Full-Time Roles</div>
+    <h1>
+      <span class="line1">CHIRAG MEHTA</span>
+      <span class="line2">CRYPTO RESEARCH ANALYST</span>
+    </h1>
+    <p class="hero-desc">3+ years translating <strong>on-chain data, market structure, and macro signals</strong> into institutional-grade research. From DeFi deep-dives to breaking market analysis, I help readers understand not just <em>what</em> happened — but <em>why it matters</em>.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Projects Researched</div></div>
+      <div class="stat"><div class="stat-num">150K+</div><div class="stat-label">Stakeholders Reached</div></div>
+      <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Years in Web3</div></div>
+      
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section">
+    <div class="section-header"><div class="section-icon">◈</div><h2 class="section-title">Who I Am</h2></div>
+    <p class="about-text">I'm a crypto-native researcher who bridges the gap between <strong>raw on-chain data and reader-ready narratives</strong>. My work covers everything from Layer 1/L2 fundamentals and DeFi protocol analysis to macro-driven market outlooks. I've spent 3+ years producing institutional-style research for 50+ Web3 communities, and I've built my own research platform — <strong>NM Alpha Tribe</strong> — from the ground up.</p>
+    <p class="about-text" style="margin-bottom: 28px;">I understand how to find <strong>the crypto angle</strong> in global macro events, how to monitor markets for moves worth storying, and how to write with a voice that respects the reader's intelligence while remaining accessible.</p>
+    <div class="about-grid">
+      <div class="highlight-card"><h4>Education</h4><p>PGDM Finance — NMIMS Mumbai (2027)<br>B.Com — MLSU Udaipur (2023)</p></div>
+      <div class="highlight-card"><h4>Location & Availability</h4><p>India · Remote-first<br>Available immediately for full-time roles</p></div>
+      <div class="highlight-card"><h4>Coverage Areas</h4><p>DeFi · L1/L2 · NFTs · CEX/DEX · Tokenomics · Macro · On-Chain</p></div>
+      <div class="highlight-card"><h4>Writing Formats</h4><p>Breaking news · Market updates · Research reports · Deep-dives · Twitter threads</p></div>
+    </div>
+  </section>
+
+  <!-- PROOF OF WORK -->
+  <section class="section" id="proof">
+    <div class="section-header"><div class="section-icon">💹</div><h2 class="section-title">Proof of Work</h2></div>
+    <p style="color: var(--muted); font-size: 13px; margin-bottom: 28px;">Real results from real calls. This isn't theory — it's a track record built in public, on-chain, and verified by community members across Discord and X.</p>
+
+    <!-- PNL BANNER -->
+    <div class="pnl-banner">
+      <div class="pnl-stat">
+        <div class="pnl-value from">~$1,000</div>
+        <div class="pnl-label">Starting Portfolio</div>
+      </div>
+      <div class="pnl-arrow">→</div>
+      <div class="pnl-stat">
+        <div class="pnl-value to">$18,566</div>
+        <div class="pnl-label">Peak Portfolio Value</div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-start;">
+        <div class="pnl-badge">+154% 🚀</div>
+        <div style="font-size:11px; color:var(--muted); font-family:'DM Mono',monospace;">+$11,260 unrealised gain</div>
+      </div>
+      <div class="pnl-desc"><strong>$PNUT trade:</strong> Identified Peanut the Squirrel narrative early, accumulated ~$1K position across Solana meme cycle. Grew to $12,143 at peak — a <strong style="color:var(--accent2);">+700% return</strong> on a single call. Verified on-chain via Solana wallet screenshots below.</div>
+    </div>
+
+    <!-- SCREENSHOTS -->
+    <div class="screenshots-grid">
+      <div class="screenshot-card">
+        <img src="wallet-start.jpeg" alt="Starting portfolio ~$1,216" />
+        <div class="screenshot-label">
+          <span>📱 Solana Wallet · Starting Point</span>
+          <span class="badge badge-red">~$1,216 · Entry</span>
+        </div>
+      </div>
+      <div class="screenshot-card">
+        <img src="wallet-peak.jpeg" alt="Portfolio peaked at $18,566" />
+        <div class="screenshot-label">
+          <span>📱 Solana Wallet · After $PNUT Call</span>
+          <span class="badge badge-green">$18,566 · +154%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIALS HEADER -->
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px; margin-top:8px;">
+      <h3 style="font-family:'DM Serif Display',serif; font-size:20px;">Community Testimonials</h3>
+      <a href="https://x.com/nm_founder/status/1721774151315427559" target="_blank" style="font-size:11px; color:var(--accent); font-family:'DM Mono',monospace; text-decoration:none; background:rgba(240,192,64,0.08); border:1px solid rgba(240,192,64,0.2); padding:4px 12px; border-radius:100px;">View Discord Wins Thread ↗</a>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-text">"@_Harry.eth_ been loving your alpha calls, soo much better than most. I haven't been flipping but you are making me want to 😂"</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">U</div>
+          <div><div class="testimonial-name">Discord Member</div><div class="testimonial-context">NM Alpha Community · 2022</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-text">"Bond|CC: @_Harry.eth_ Is the Goat" — verified by multiple Discord members in the same thread.</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">B</div>
+          <div><div class="testimonial-name">Bond|CC</div><div class="testimonial-context">Discord · Verified Member</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-text">"Leon: fire as fck! killing it! they look clean" — response to alpha calls shared in community channel.</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">L</div>
+          <div><div class="testimonial-name">Leon.</div><div class="testimonial-context">Discord · Dec 2022</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-text">"I saw some of your Calls and I liked them 🙂 So it would be a great Thing to have you on board" — unsolicited outreach from OxPadde</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">O</div>
+          <div><div class="testimonial-name">OxPadde</div><div class="testimonial-context">Discord · Project Invite</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-text">"KW: Hey Harry. Just wanted to say... Your calls are very good" — direct message from another community leader.</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">K</div>
+          <div><div class="testimonial-name">KW</div><div class="testimonial-context">Discord · Dec 2022</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-text">Community member bought AstorPrince NFT on recommendation via Discord — confirmed profitable flip with on-chain confirmation and congratulations from community.</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">🎯</div>
+          <div><div class="testimonial-name">Successful NFT Call</div><div class="testimonial-context">Discord · Nov 2022 · Verified on-chain</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIAL SCREENSHOT -->
+    <div class="testimonial-screenshot" style="margin-top:20px;">
+      <img src="Feedback.png" alt="Community feedback and Discord wins" />
+      <div class="testimonial-screenshot-label">📸 Original screenshot — community feedback, Discord wins, and NFT sale confirmations from @HarryDemitry / NM Alpha channels</div>
+    </div>
+
+    <!-- EXTERNAL LINKS / RESOURCES -->
+    <div style="margin-top:28px;">
+      <h3 style="font-family:'DM Serif Display',serif; font-size:20px; margin-bottom:20px;">Verify & Join</h3>
+      <div class="resources-grid">
+        <a href="https://x.com/nm_founder/status/1721774151315427559" target="_blank" class="resource-card">
+          <div class="resource-icon">🧵</div>
+          <span class="resource-tag x">𝕏 Thread</span>
+          <div class="resource-title">Discord Wins Thread</div>
+          <div class="resource-desc">Live X thread documenting community wins, successful calls, and member feedback from the NM Alpha Discord server.</div>
+          <div class="resource-cta">View on X ↗</div>
+        </a>
+        <a href="https://discord.gg/AS5eJkUven" target="_blank" class="resource-card">
+          <div class="resource-icon">💬</div>
+          <span class="resource-tag discord">Discord</span>
+          <div class="resource-title">NM Alpha Discord</div>
+          <div class="resource-desc">Join the community where all research, alpha calls, and market updates are shared in real time. See the work in action.</div>
+          <div class="resource-cta">Join Server ↗</div>
+        </a>
+        <a href="https://drive.google.com/drive/folders/1NNI2M2pxK4WtWKxrSjB7HfK-JaiplBPH?usp=sharing" target="_blank" class="resource-card">
+          <div class="resource-icon">📁</div>
+          <span class="resource-tag drive">Google Drive</span>
+          <div class="resource-title">NFT Caller Resume</div>
+          <div class="resource-desc">Full archive of crypto & NFT calls with timestamps, documented outcomes, and market context. The complete track record.</div>
+          <div class="resource-cta">View Drive ↗</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL / X -->
+  <section class="section" id="social">
+    <div class="section-header"><div class="section-icon">𝕏</div><h2 class="section-title">Social Presence</h2><span class="section-count">3 accounts</span></div>
+    <p style="color: var(--muted); font-size: 13px; margin-bottom: 28px;">Active across three X accounts covering crypto research, community building, and market intelligence — reaching a combined audience of 50K+ in the Web3 space.</p>
+    <div class="x-accounts-grid">
+      <a href="https://x.com/NM_Founder" target="_blank" class="x-card">
+        <div class="x-role-tag">Founder · Main Account</div>
+        <div class="x-handle">@NM_Founder</div>
+        <div class="x-desc">Personal account as founder of NM Alpha Tribe. Posts on crypto market structure, research methodologies, Web3 narratives, and building in public.</div>
+        <div class="x-cta">View Profile →</div>
+      </a>
+      <a href="https://x.com/NM_ALPHA" target="_blank" class="x-card">
+        <div class="x-role-tag">Research · Community</div>
+        <div class="x-handle">@NM_ALPHA</div>
+        <div class="x-desc">Official account for NM Alpha Tribe. Publishes market updates, on-chain signal threads, DeFi deep-dives, and sector research for 50K+ stakeholders.</div>
+        <div class="x-cta">View Profile →</div>
+      </a>
+      <a href="https://x.com/HarryDemitry" target="_blank" class="x-card">
+        <div class="x-role-tag">Analysis · Alpha</div>
+        <div class="x-handle">@HarryDemitry</div>
+        <div class="x-desc">Focused account for sharing crypto market alpha, trade setups, and on-chain findings. Concise, data-driven takes on emerging narratives and market moves.</div>
+        <div class="x-cta">View Profile →</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- WRITING SAMPLES -->
+  <section class="section" id="writing">
+    <div class="section-header"><div class="section-icon">✦</div><h2 class="section-title">Writing Samples</h2><span class="section-count">6 pieces</span></div>
+    <div class="writing-note">
+      <span>💡</span>
+      <span><strong>Note:</strong> Original sample pieces demonstrating range and voice across formats. The <strong style="color:var(--accent2)">𝕏 Thread</strong> buttons link to @NM_ALPHA where published threads live. Swap in Substack/Medium URLs once articles are live.</span>
+    </div>
+    <div class="articles-grid">
+      <div class="article-card" onclick="toggleArticle(this)">
+        <div class="article-type breaking">⚡ BREAKING NEWS</div>
+        <h3>Bitcoin Breaks $70K Resistance — What the On-Chain Data Is Actually Telling Us</h3>
+        <p>A quick read on whether this move is retail-driven euphoria or institutional accumulation — and what to watch next.</p>
+        <div class="sample-content">Bitcoin crossed $70,000 on Thursday in a move that, on the surface, looked like a classic breakout. But zoom into the on-chain data and a more nuanced picture emerges. Exchange netflow data from Glassnode shows BTC outflows hitting a 90-day high — a signal typically associated with long-term holder accumulation rather than speculative buying.<br><br>The MVRV Z-Score, currently sitting at 2.3, remains well below the 7.0+ levels that have historically preceded cycle tops. Translation: there's room to run, but this isn't the euphoria phase yet. Watch the $68,500 support level — a reclaim of that on strong volume would confirm bulls are in control.</div>
+        <div class="article-meta"><span>Feb 2025</span><span>⏱ 3 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
+      </div>
+      <div class="article-card" onclick="toggleArticle(this)">
+        <div class="article-type analysis">📊 MARKET ANALYSIS</div>
+        <h3>Ethereum's Fee Revenue Collapsed 80% — Is the L2 Thesis Eating Its Own Parent?</h3>
+        <p>Dencun's blob transactions solved scalability but created an identity crisis for Ethereum's business model.</p>
+        <div class="sample-content">Ethereum's base layer fee revenue has cratered since the Dencun upgrade, dropping over 80% as L2s migrated to cheap blob transactions. On the face of it, this looks catastrophic. But the bear case misses Ethereum's bet: it isn't monetizing base layer execution — it's monetizing the settlement layer beneath an entire rollup economy.<br><br>The real metric to watch isn't L1 fees; it's blob fee revenue growth and the number of L2s using Ethereum as their data availability layer. Arbitrum, Base, and Optimism collectively processed more transactions in Q1 2025 than Ethereum did in all of 2023. The pie is bigger — just distributed differently.</div>
+        <div class="article-meta"><span>Mar 2025</span><span>⏱ 6 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
+      </div>
+      <div class="article-card" onclick="toggleArticle(this)">
+        <div class="article-type macro">🌍 MACRO × CRYPTO</div>
+        <h3>The Fed Held Rates Again. Here's Why That's Quietly Bullish for Crypto in Q3</h3>
+        <p>Connecting the dots between Powell's cautious pivot language and what history says about crypto performance in rate plateau environments.</p>
+        <div class="sample-content">The Federal Reserve held the federal funds rate at 5.25–5.50% for the fifth consecutive meeting. Markets yawned. But for crypto traders, the subtext matters more than the headline. When the Fed enters a prolonged pause — not cutting, but also done hiking — risk assets historically enter a quiet accumulation phase before the next leg up.<br><br>Look at 2019: BTC rallied 170% in a five-month window during a Fed pause that preceded rate cuts. The dynamic isn't identical today, but the structure rhymes. Global M2 money supply has ticked up 3.2% over the past quarter, and dollar liquidity conditions — a historically reliable crypto price correlate — are loosening at the margins.</div>
+        <div class="article-meta"><span>Jan 2025</span><span>⏱ 5 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
+      </div>
+      <div class="article-card" onclick="toggleArticle(this)">
+        <div class="article-type defi">⬡ DEFI DEEP-DIVE</div>
+        <h3>Aave v3's Efficiency Mode Is Quietly Reshaping How DeFi Manages Collateral Risk</h3>
+        <p>A technical breakdown of how eMode works, who's using it, and why it matters for the future of collateral-efficient lending.</p>
+        <div class="sample-content">Aave v3's Efficiency Mode (eMode) allows users to borrow against correlated assets at loan-to-value ratios up to 97% — a number that would have sounded reckless in DeFi summer 2021. The key insight: if your collateral and debt are pegged to the same underlying (e.g., stETH and ETH), liquidation risk drops dramatically because they move together.<br><br>Since launch, eMode has generated over $2.1B in utilization with a liquidation rate 4x lower than standard borrowing pools, per Dune Analytics. This isn't just a protocol optimization — it's a shift in how DeFi thinks about risk-adjusted capital efficiency, and it's a template other protocols are beginning to copy.</div>
+        <div class="article-meta"><span>Dec 2024</span><span>⏱ 8 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
+      </div>
+      <div class="article-card" onclick="toggleArticle(this)">
+        <div class="article-type breaking">⚡ MARKET UPDATE</div>
+        <h3>Daily Market Wrap: Altcoins Bleed as BTC Dominance Hits 58% — Key Levels to Watch</h3>
+        <p>Your end-of-day breakdown of what moved, what it means, and what to set alerts for before tomorrow's open.</p>
+        <div class="sample-content">BTC dominance pushed to 58.3% today — the highest level since early 2021 — as capital rotated out of mid-caps and into large-cap safety. SOL dropped 8.2% after Solana ecosystem outflows hit a three-week high on-chain. ETH held relatively firm at -3.1%, likely buoyed by persistent institutional ETF inflows.<br><br>Technically, the total crypto market cap is testing the 21-day EMA at $2.18T. A daily close below that level opens the door to $2.05T, where the 50-day EMA sits. The Fear & Greed Index sits at 44 (Fear) — historically a zone where patient buyers have been rewarded over 3-month horizons.</div>
+        <div class="article-meta"><span>Ongoing series</span><span>⏱ 2 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
+      </div>
+      <div class="article-card" onclick="toggleArticle(this)">
+        <div class="article-type analysis">📊 SECTOR REPORT</div>
+        <h3>State of the Restaking Sector: $15B TVL, Three Dominant Protocols, and an Emerging Systemic Risk</h3>
+        <p>A structured overview of EigenLayer, Symbiotic, and Karak — where the money is, where the risk hides, and what happens if things go wrong.</p>
+        <div class="sample-content">Restaking has grown from a conceptual whitepaper idea to a $15B+ sector in under 18 months. The premise is elegant: use already-staked ETH to secure additional protocols, earning layered yield. The risk is less elegant — a slashing event on one Actively Validated Service (AVS) could theoretically cascade through the underlying ETH stake.<br><br>EigenLayer holds 68% market share with $10.2B TVL but has yet to enable live AVS slashing in production. That's a critical nuance: current restaking TVL is generating yield without carrying the actual risk it's supposed to be priced for. When slashing goes live, we'll find out if the market has priced risk correctly — or significantly underpriced it.</div>
+        <div class="article-meta"><span>Nov 2024</span><span>⏱ 10 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ONCHAIN -->
+  <section class="section" id="onchain">
+    <div class="section-header"><div class="section-icon">⬡</div><h2 class="section-title">On-Chain Analysis Capability</h2></div>
+    <p style="color: var(--muted); font-size: 13px; margin-bottom: 28px;">Sample metrics I track and interpret daily. Real-time signal monitoring across market structure, liquidity, and sentiment.</p>
+    <div class="onchain-grid">
+      <div class="metric-card"><div class="metric-value">2.31</div><div class="metric-label">MVRV Z-Score</div><div class="metric-change">▲ Accumulation Zone</div></div>
+      <div class="metric-card"><div class="metric-value">-14K</div><div class="metric-label">BTC Exchange Netflow</div><div class="metric-change">▼ Outflows (Bullish)</div></div>
+      <div class="metric-card"><div class="metric-value">58.3%</div><div class="metric-label">BTC Dominance</div><div class="metric-change down">▲ Risk-off signal</div></div>
+      <div class="metric-card"><div class="metric-value">44</div><div class="metric-label">Fear & Greed</div><div class="metric-change">→ Fear territory</div></div>
+    </div>
+    <div class="framework-list">
+      <div class="framework-item"><div class="framework-num">01</div><div class="framework-content"><h4>Fundamental Research Framework</h4><p>Protocol revenue, TVL composition, user growth, competitive moat analysis, tokenomics sustainability, and unlock schedule modeling.</p></div></div>
+      <div class="framework-item"><div class="framework-num">02</div><div class="framework-content"><h4>On-Chain Signal Monitoring</h4><p>Daily tracking of exchange flows, SOPR, MVRV, realized cap movements, and whale wallet activity via Glassnode and Dune to detect market shifts before they become headlines.</p></div></div>
+      <div class="framework-item"><div class="framework-num">03</div><div class="framework-content"><h4>Technical Analysis Layer</h4><p>Multi-timeframe trend analysis, volume profile, key support/resistance mapping, and EMA/RSI signals via TradingView for market update context and price level reporting.</p></div></div>
+      <div class="framework-item"><div class="framework-num">04</div><div class="framework-content"><h4>Macro → Crypto Translation</h4><p>Monitoring Fed policy, global M2, DXY, and TradFi earnings to identify macro tailwinds and headwinds — and translating them into crypto-specific implications for readers.</p></div></div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="section" id="tools">
+    <div class="section-header"><div class="section-icon">▣</div><h2 class="section-title">Tools & Stack</h2></div>
+    <div class="tools-grid">
+      <div class="tool-item"><div class="tool-icon">📈</div><div class="tool-name">Glassnode</div><div class="tool-cat">On-Chain Analytics</div></div>
+      <div class="tool-item"><div class="tool-icon">🦄</div><div class="tool-name">Dune Analytics</div><div class="tool-cat">On-Chain / SQL</div></div>
+      <div class="tool-item"><div class="tool-icon">🖥</div><div class="tool-name">TradingView</div><div class="tool-cat">Technical Analysis</div></div>
+      <div class="tool-item"><div class="tool-icon">🪙</div><div class="tool-name">CoinGecko</div><div class="tool-cat">Market Data</div></div>
+      <div class="tool-item"><div class="tool-icon">📊</div><div class="tool-name">TokenTerminal</div><div class="tool-cat">Protocol Metrics</div></div>
+      <div class="tool-item"><div class="tool-icon">🔍</div><div class="tool-name">Dexscreener</div><div class="tool-cat">DEX / Token Data</div></div>
+      <div class="tool-item"><div class="tool-icon">📋</div><div class="tool-name">Notion</div><div class="tool-cat">Research & Docs</div></div>
+      <div class="tool-item"><div class="tool-icon">📉</div><div class="tool-name">CoinMarketCap</div><div class="tool-cat">Market Data</div></div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section">
+    <div class="section-header"><div class="section-icon">◉</div><h2 class="section-title">Core Competencies</h2></div>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <div class="skill-cat-title">📝 Research & Writing</div>
+        <span class="skill-tag">Breaking News</span><span class="skill-tag">Market Updates</span><span class="skill-tag">Long-form Research</span><span class="skill-tag">Sector Deep-dives</span><span class="skill-tag">Executive Summaries</span><span class="skill-tag">Whitepaper Analysis</span>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">⬡ Market Analysis</div>
+        <span class="skill-tag">Fundamental Analysis</span><span class="skill-tag">On-Chain Analytics</span><span class="skill-tag">Technical Analysis</span><span class="skill-tag">Tokenomics</span><span class="skill-tag">Market Sizing</span><span class="skill-tag">Competitive Analysis</span>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">🌍 Coverage Areas</div>
+        <span class="skill-tag">DeFi Protocols</span><span class="skill-tag">Layer 1 / Layer 2</span><span class="skill-tag">CEX / DEX</span><span class="skill-tag">NFT Markets</span><span class="skill-tag">Macro × Crypto</span><span class="skill-tag">Regulatory Analysis</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <div class="section-header"><div class="section-icon">◐</div><h2 class="section-title">Experience</h2></div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">SEP 2023 — PRESENT</div>
+        <div class="timeline-role">Founder & Lead Researcher</div>
+        <div class="timeline-org">NM Alpha Tribe</div>
+        <ul class="timeline-bullets">
+          <li>Built a research-driven Web3 intelligence platform from 0 to 50K+ community members</li>
+          <li>Publish institutional-style research briefs, sector deep-dives, and market outlooks</li>
+          <li>Distribute research across Discord (<a href="https://discord.gg/AS5eJkUven" target="_blank" style="color:var(--accent); text-decoration:none;">Join ↗</a>), X (@NM_ALPHA, @NM_Founder) and web platforms</li>
+          <li>Apply macro trend tracking and market cycle analysis to inform strategic insights</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">NOV 2022 — PRESENT</div>
+        <div class="timeline-role">Web3 Research Analyst & NFT Alpha Caller (Freelance)</div>
+        <div class="timeline-org">Multiple NFT/Crypto Projects</div>
+        <ul class="timeline-bullets">
+          <li>Produced institutional-grade reports for 50+ Web3 projects covering DeFi, NFTs, L1/L2</li>
+          <li>Authored weekly and thematic research briefs for 150K+ stakeholders</li>
+          <li>Called multiple profitable NFT & meme coin opportunities — documented in <a href="https://drive.google.com/drive/folders/1NNI2M2pxK4WtWKxrSjB7HfK-JaiplBPH?usp=sharing" target="_blank" style="color:var(--accent); text-decoration:none;">caller resume ↗</a></li>
+          <li>Grew $PNUT position from ~$1K entry to $12,143 peak (+700%) during Solana meme cycle</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">JUN 2023 — SEP 2024</div>
+        <div class="timeline-role">Financial Analyst</div>
+        <div class="timeline-org">Anupam Pamecha & Co.</div>
+        <ul class="timeline-bullets">
+          <li>Delivered data-driven financial analysis and structured reporting for enterprise decision-making</li>
+          <li>Strengthened expertise in regulatory analysis, risk assessment, and institutional reporting</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <h2>LET'S WORK TOGETHER</h2>
+    <p>Available immediately for full-time remote roles</p>
+    <div class="cta-buttons">
+      <a href="mailto:chiragmehta1304@gmail.com" class="btn-primary">✉ Send Me an Email</a>
+      <a href="https://www.linkedin.com/in/chiragmehta1304/" target="_blank" class="btn-secondary">⌘ LinkedIn Profile</a>
+      <a href="https://discord.gg/AS5eJkUven" target="_blank" class="btn-secondary" style="border-color:rgba(88,101,242,0.3); color:#7289da;">◈ Discord</a>
+      <a href="https://x.com/NM_Founder" target="_blank" class="btn-x">𝕏 @NM_Founder</a>
+      <a href="https://x.com/NM_ALPHA" target="_blank" class="btn-x">𝕏 @NM_ALPHA</a>
+      <a href="https://x.com/HarryDemitry" target="_blank" class="btn-x">𝕏 @HarryDemitry</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+function toggleArticle(card) {
+  card.classList.toggle('expanded');
+  const btn = card.querySelector('.expand-btn');
+  btn.textContent = card.classList.contains('expanded') ? 'CLOSE ↑' : 'READ SAMPLE ↓';
+}
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+document.querySelectorAll('.article-card, .skill-category, .tool-item, .metric-card, .x-card, .testimonial-card, .resource-card, .screenshot-card').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = `opacity 0.5s ease ${i * 0.03}s, transform 0.5s ease ${i * 0.03}s`;
+  setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 60 + i * 30);
+});
+</script>
+</body>
+</html>
