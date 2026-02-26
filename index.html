@@ -362,6 +362,70 @@
     .reports-grid { grid-template-columns: 1fr; }
     .report-embed { height: 420px; }
   }
+
+  /* CRYPTO TICKER */
+  .crypto-ticker {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(10,10,15,0.95); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 64px;
+    display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+  }
+  .ticker-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; font-family: 'DM Mono', monospace; white-space: nowrap; }
+  .ticker-coins { display: flex; gap: 24px; flex: 1; flex-wrap: wrap; }
+  .ticker-coin { display: flex; align-items: center; gap: 8px; }
+  .ticker-coin-name { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+  .ticker-coin-price { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); font-weight: 500; }
+  .ticker-coin-change { font-family: 'DM Mono', monospace; font-size: 11px; }
+  .ticker-coin-change.up { color: var(--accent2); }
+  .ticker-coin-change.down { color: var(--accent3); }
+  .ticker-divider { width: 1px; height: 20px; background: var(--border); }
+  .fear-greed-widget { display: flex; align-items: center; gap: 8px; }
+  .fear-greed-label { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 1.5px; }
+  .fear-greed-score { font-family: 'Bebas Neue', sans-serif; font-size: 20px; line-height: 1; }
+  .fear-greed-text { font-size: 11px; font-family: 'DM Mono', monospace; }
+  .fear-greed-bar { width: 80px; height: 5px; border-radius: 3px; background: var(--surface2); overflow: hidden; }
+  .fear-greed-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+  .ticker-loading { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; animation: blink 1s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  @media (max-width: 900px) {
+    .crypto-ticker { padding: 10px 20px; gap: 16px; }
+    .ticker-coins { gap: 14px; }
+  }
+
+  /* READING MODAL */
+  .sample-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+    align-items: flex-start; justify-content: center;
+    padding: 40px 24px; overflow-y: auto;
+  }
+  .sample-modal-overlay.open { display: flex; }
+  .sample-modal {
+    background: var(--surface); border: 1px solid rgba(240,192,64,0.2);
+    border-radius: 20px; max-width: 720px; width: 100%;
+    padding: 48px; position: relative; margin: auto;
+    animation: modalIn 0.3s ease forwards;
+  }
+  @keyframes modalIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-close-btn {
+    position: absolute; top: 20px; right: 20px;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 8px; padding: 7px 14px;
+    font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer;
+    transition: all 0.2s; letter-spacing: 1px;
+  }
+  .modal-close-btn:hover { color: var(--accent); border-color: rgba(240,192,64,0.3); }
+  .modal-type { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; font-family: 'DM Mono', monospace; color: var(--muted); margin-bottom: 12px; }
+  .modal-title { font-family: 'DM Serif Display', serif; font-size: 26px; line-height: 1.3; color: var(--text); margin-bottom: 8px; }
+  .modal-meta { display: flex; gap: 16px; font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .modal-body { font-size: 15px; color: #c8c8d8; line-height: 1.85; }
+  .modal-body p { margin-bottom: 18px; }
+  .modal-body h4 { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin: 28px 0 12px; }
+  .modal-body strong { color: var(--text); }
+  .modal-body .highlight { background: rgba(240,192,64,0.07); border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 20px 0; font-size: 14px; }
+  .modal-footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .modal-footer-note { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
 </style>
 </head>
 <body>
@@ -402,6 +466,33 @@
 <!-- MAIN -->
 <div class="main">
 
+  <!-- CRYPTO TICKER -->
+  <div class="crypto-ticker" id="cryptoTicker">
+    <span class="ticker-label">Live Markets</span>
+    <div class="ticker-coins" id="tickerCoins">
+      <span class="ticker-loading">Loading prices…</span>
+    </div>
+    <div class="ticker-divider"></div>
+    <div class="fear-greed-widget" id="fearGreedWidget">
+      <span class="ticker-loading">Loading…</span>
+    </div>
+  </div>
+
+  <!-- READING MODAL -->
+  <div class="sample-modal-overlay" id="sampleModal" onclick="if(event.target===this)closeModal()">
+    <div class="sample-modal">
+      <button class="modal-close-btn" onclick="closeModal()">✕ Close</button>
+      <div class="modal-type" id="modalType"></div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <div class="modal-meta" id="modalMeta"></div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer">
+        <span class="modal-footer-note" id="modalFooterNote"></span>
+        <a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" style="font-size:12px; padding:7px 14px;">View on 𝕏 @NM_ALPHA ↗</a>
+      </div>
+    </div>
+  </div>
+
   <!-- HERO -->
   <section class="hero" id="about">
     <div class="hero-tag"><div class="dot"></div>Available for Full-Time Roles</div>
@@ -421,8 +512,8 @@
   <!-- ABOUT -->
   <section class="section">
     <div class="section-header"><div class="section-icon">◈</div><h2 class="section-title">Who I Am</h2></div>
-    <p class="about-text">I'm a crypto-native researcher who bridges the gap between <strong>raw on-chain data and reader-ready narratives</strong>. My work covers everything from Layer 1/L2 fundamentals and DeFi protocol analysis to macro-driven market outlooks. I've spent 3+ years producing institutional-style research for 50+ Web3 communities, and I've built my own research platform — <strong>NM Alpha Tribe</strong> — from the ground up.</p>
-    <p class="about-text" style="margin-bottom: 28px;">I understand how to find <strong>the crypto angle</strong> in global macro events, how to monitor markets for moves worth storying, and how to write with a voice that respects the reader's intelligence while remaining accessible.</p>
+    <p class="about-text">I'm <strong>Chirag Mehta</strong> — a Web3-focused professional with deep roots in crypto research, market analysis, and growth strategy. Over 3+ years, I've developed a structured, analytical approach to decision-making in fast-moving markets — spanning on-chain research, narrative tracking, early-stage project evaluation, and capital flow analysis. I am currently building <strong>NM Alpha Tribe</strong> a web3 community, and I've produced institutional-grade research and alpha calls for various small Web3 projects along the way.</p>
+    <p class="about-text" style="margin-bottom: 28px;">My focus is on <strong>understanding ecosystems before the crowd does</strong> — tracking where capital flows, evaluating protocol fundamentals, and communicating insights clearly. I've been hands-on with AI tools and digital workflows to improve research efficiency and execution. I value <strong>clarity, discipline, and long-term thinking</strong> over short-term noise. I work best in roles that demand independent research, critical analysis, and continuous learning — and I'm comfortable building from the ground up.</p>
     <div class="about-grid">
       <div class="highlight-card"><h4>Education</h4><p>PGDM Finance — NMIMS Mumbai (2027)<br>B.Com — MLSU Udaipur (2023)</p></div>
       <div class="highlight-card"><h4>Location & Availability</h4><p>India · Remote-first<br>Available immediately for full-time roles</p></div>
@@ -523,11 +614,7 @@
       </div>
     </div>
 
-    <!-- TESTIMONIAL SCREENSHOT -->
-    <div class="testimonial-screenshot" style="margin-top:20px;">
-      <img src="Feedback.png" alt="Community feedback and Discord wins" />
-      <div class="testimonial-screenshot-label">📸 Original screenshot — community feedback, Discord wins, and NFT sale confirmations from @HarryDemitry / NM Alpha channels</div>
-    </div>
+
 
     <!-- EXTERNAL LINKS / RESOURCES -->
     <div style="margin-top:28px;">
@@ -738,46 +825,40 @@
       <span><strong>Note:</strong> Original sample pieces demonstrating range and voice across formats. The <strong style="color:var(--accent2)">𝕏 Thread</strong> buttons link to @NM_ALPHA where published threads live. Swap in Substack/Medium URLs once articles are live.</span>
     </div>
     <div class="articles-grid">
-      <div class="article-card" onclick="toggleArticle(this)">
+      <div class="article-card" onclick="openSampleModal(0)">
         <div class="article-type breaking">⚡ BREAKING NEWS</div>
         <h3>Bitcoin Breaks $70K Resistance — What the On-Chain Data Is Actually Telling Us</h3>
         <p>A quick read on whether this move is retail-driven euphoria or institutional accumulation — and what to watch next.</p>
-        <div class="sample-content">Bitcoin crossed $70,000 on Thursday in a move that, on the surface, looked like a classic breakout. But zoom into the on-chain data and a more nuanced picture emerges. Exchange netflow data from Glassnode shows BTC outflows hitting a 90-day high — a signal typically associated with long-term holder accumulation rather than speculative buying.<br><br>The MVRV Z-Score, currently sitting at 2.3, remains well below the 7.0+ levels that have historically preceded cycle tops. Translation: there's room to run, but this isn't the euphoria phase yet. Watch the $68,500 support level — a reclaim of that on strong volume would confirm bulls are in control.</div>
         <div class="article-meta"><span>Feb 2025</span><span>⏱ 3 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
       </div>
-      <div class="article-card" onclick="toggleArticle(this)">
+      <div class="article-card" onclick="openSampleModal(1)">
         <div class="article-type analysis">📊 MARKET ANALYSIS</div>
         <h3>Ethereum's Fee Revenue Collapsed 80% — Is the L2 Thesis Eating Its Own Parent?</h3>
         <p>Dencun's blob transactions solved scalability but created an identity crisis for Ethereum's business model.</p>
-        <div class="sample-content">Ethereum's base layer fee revenue has cratered since the Dencun upgrade, dropping over 80% as L2s migrated to cheap blob transactions. On the face of it, this looks catastrophic. But the bear case misses Ethereum's bet: it isn't monetizing base layer execution — it's monetizing the settlement layer beneath an entire rollup economy.<br><br>The real metric to watch isn't L1 fees; it's blob fee revenue growth and the number of L2s using Ethereum as their data availability layer. Arbitrum, Base, and Optimism collectively processed more transactions in Q1 2025 than Ethereum did in all of 2023. The pie is bigger — just distributed differently.</div>
         <div class="article-meta"><span>Mar 2025</span><span>⏱ 6 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
       </div>
-      <div class="article-card" onclick="toggleArticle(this)">
+      <div class="article-card" onclick="openSampleModal(2)">
         <div class="article-type macro">🌍 MACRO × CRYPTO</div>
         <h3>The Fed Held Rates Again. Here's Why That's Quietly Bullish for Crypto in Q3</h3>
         <p>Connecting the dots between Powell's cautious pivot language and what history says about crypto performance in rate plateau environments.</p>
-        <div class="sample-content">The Federal Reserve held the federal funds rate at 5.25–5.50% for the fifth consecutive meeting. Markets yawned. But for crypto traders, the subtext matters more than the headline. When the Fed enters a prolonged pause — not cutting, but also done hiking — risk assets historically enter a quiet accumulation phase before the next leg up.<br><br>Look at 2019: BTC rallied 170% in a five-month window during a Fed pause that preceded rate cuts. The dynamic isn't identical today, but the structure rhymes. Global M2 money supply has ticked up 3.2% over the past quarter, and dollar liquidity conditions — a historically reliable crypto price correlate — are loosening at the margins.</div>
         <div class="article-meta"><span>Jan 2025</span><span>⏱ 5 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
       </div>
-      <div class="article-card" onclick="toggleArticle(this)">
+      <div class="article-card" onclick="openSampleModal(3)">
         <div class="article-type defi">⬡ DEFI DEEP-DIVE</div>
         <h3>Aave v3's Efficiency Mode Is Quietly Reshaping How DeFi Manages Collateral Risk</h3>
         <p>A technical breakdown of how eMode works, who's using it, and why it matters for the future of collateral-efficient lending.</p>
-        <div class="sample-content">Aave v3's Efficiency Mode (eMode) allows users to borrow against correlated assets at loan-to-value ratios up to 97% — a number that would have sounded reckless in DeFi summer 2021. The key insight: if your collateral and debt are pegged to the same underlying (e.g., stETH and ETH), liquidation risk drops dramatically because they move together.<br><br>Since launch, eMode has generated over $2.1B in utilization with a liquidation rate 4x lower than standard borrowing pools, per Dune Analytics. This isn't just a protocol optimization — it's a shift in how DeFi thinks about risk-adjusted capital efficiency, and it's a template other protocols are beginning to copy.</div>
         <div class="article-meta"><span>Dec 2024</span><span>⏱ 8 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
       </div>
-      <div class="article-card" onclick="toggleArticle(this)">
+      <div class="article-card" onclick="openSampleModal(4)">
         <div class="article-type breaking">⚡ MARKET UPDATE</div>
         <h3>Daily Market Wrap: Altcoins Bleed as BTC Dominance Hits 58% — Key Levels to Watch</h3>
         <p>Your end-of-day breakdown of what moved, what it means, and what to set alerts for before tomorrow's open.</p>
-        <div class="sample-content">BTC dominance pushed to 58.3% today — the highest level since early 2021 — as capital rotated out of mid-caps and into large-cap safety. SOL dropped 8.2% after Solana ecosystem outflows hit a three-week high on-chain. ETH held relatively firm at -3.1%, likely buoyed by persistent institutional ETF inflows.<br><br>Technically, the total crypto market cap is testing the 21-day EMA at $2.18T. A daily close below that level opens the door to $2.05T, where the 50-day EMA sits. The Fear & Greed Index sits at 44 (Fear) — historically a zone where patient buyers have been rewarded over 3-month horizons.</div>
         <div class="article-meta"><span>Ongoing series</span><span>⏱ 2 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
       </div>
-      <div class="article-card" onclick="toggleArticle(this)">
+      <div class="article-card" onclick="openSampleModal(5)">
         <div class="article-type analysis">📊 SECTOR REPORT</div>
         <h3>State of the Restaking Sector: $15B TVL, Three Dominant Protocols, and an Emerging Systemic Risk</h3>
         <p>A structured overview of EigenLayer, Symbiotic, and Karak — where the money is, where the risk hides, and what happens if things go wrong.</p>
-        <div class="sample-content">Restaking has grown from a conceptual whitepaper idea to a $15B+ sector in under 18 months. The premise is elegant: use already-staked ETH to secure additional protocols, earning layered yield. The risk is less elegant — a slashing event on one Actively Validated Service (AVS) could theoretically cascade through the underlying ETH stake.<br><br>EigenLayer holds 68% market share with $10.2B TVL but has yet to enable live AVS slashing in production. That's a critical nuance: current restaking TVL is generating yield without carrying the actual risk it's supposed to be priced for. When slashing goes live, we'll find out if the market has priced risk correctly — or significantly underpriced it.</div>
         <div class="article-meta"><span>Nov 2024</span><span>⏱ 10 min read</span><a href="https://x.com/NM_ALPHA" target="_blank" class="article-link-btn" onclick="event.stopPropagation()">𝕏 Thread ↗</a><span class="expand-btn">READ SAMPLE ↓</span></div>
       </div>
     </div>
@@ -890,13 +971,129 @@
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── WRITING SAMPLES DATA ──────────────────────────────────────────────────────
+const writingSamples = [
+  {
+    type: "⚡ BREAKING NEWS",
+    title: "Bitcoin Breaks $70K Resistance — What the On-Chain Data Is Actually Telling Us",
+    meta: ["Feb 2025", "⏱ 3 min read", "Breaking News"],
+    body: `
+      <p>Bitcoin crossed $70,000 on Thursday in a move that, on the surface, looked like a classic breakout. But zoom into the on-chain data and a more nuanced picture emerges.</p>
+      <h4>What the On-Chain Signals Are Saying</h4>
+      <p>Exchange netflow data from Glassnode shows BTC outflows hitting a 90-day high — a signal typically associated with long-term holder accumulation rather than speculative buying. When coins move off exchanges, they're being held, not sold. That's a structurally bullish signal.</p>
+      <p>The MVRV Z-Score, currently sitting at 2.3, remains well below the 7.0+ levels that have historically preceded cycle tops. This metric compares Bitcoin's market cap to its "realised cap" — effectively asking whether BTC is overvalued or undervalued relative to what people paid for it. At 2.3, we're in mid-cycle territory.</p>
+      <div class="highlight">Translation: there's room to run, but this isn't the euphoria phase yet. Historically, MVRV above 7 has marked distribution zones. We're nowhere near that.</div>
+      <h4>Key Levels to Watch</h4>
+      <p>Watch the $68,500 support level — a reclaim of that on strong volume would confirm bulls are in control and turn prior resistance into support. On the upside, $74,000 represents the next psychological zone where options market makers have significant gamma exposure, which could either accelerate or briefly cap the move.</p>
+      <p>Volume profile analysis shows thin air above $70K — there's little historical price discovery in this range, which means moves can be fast and volatile in both directions. Position sizing and risk management matter more here than at range lows.</p>
+      <h4>Bottom Line</h4>
+      <p>This breakout has on-chain backing that short-term retail pumps typically lack. Watch for a weekly close above $70K to confirm this isn't just a wick. If it holds, the next conversation is about $80K — not a retest of $65K.</p>
+    `
+  },
+  {
+    type: "📊 MARKET ANALYSIS",
+    title: "Ethereum's Fee Revenue Collapsed 80% — Is the L2 Thesis Eating Its Own Parent?",
+    meta: ["Mar 2025", "⏱ 6 min read", "Market Analysis"],
+    body: `
+      <p>Ethereum's base layer fee revenue has cratered since the Dencun upgrade, dropping over 80% as L2s migrated to cheap blob transactions. On the face of it, this looks catastrophic for ETH bulls.</p>
+      <h4>The Bear Case (and Why It's Incomplete)</h4>
+      <p>The surface reading is ugly: Ethereum's L1 is generating a fraction of the fee revenue it did during the 2021–2023 period. The EIP-4844 upgrade introduced "blobs" — a cheaper data availability format specifically for rollups — and L2s immediately migrated. Transaction fees on Arbitrum and Base dropped 95%+. Ethereum validators are earning less. The burn mechanism is barely denting supply.</p>
+      <div class="highlight">But the bear case misses Ethereum's actual bet: it isn't monetizing base layer execution — it's monetizing the settlement layer beneath an entire rollup economy.</div>
+      <h4>The Bigger Picture</h4>
+      <p>Arbitrum, Base, and Optimism collectively processed more transactions in Q1 2025 than Ethereum did in all of 2023. The pie is bigger — just distributed differently. Ethereum has essentially chosen to be the TCP/IP of Web3: the foundational protocol that enables the ecosystem above it, not the application layer that captures consumer surplus.</p>
+      <p>The real metric to watch isn't L1 fees; it's blob fee revenue growth and the number of L2s using Ethereum as their data availability layer. As blob demand grows and EIP-4844 parameters tighten over time, the base layer will capture more value — but on a longer timeline than critics expect.</p>
+      <h4>Investment Implication</h4>
+      <p>ETH as a "fee machine" is the wrong mental model for this cycle. ETH as "settlement collateral for the rollup internet" is a thesis that plays out over 3–5 years, not quarters. For those with that timeframe, current prices may look like an anomaly in retrospect. For those benchmarking quarterly, the story is harder to tell.</p>
+    `
+  },
+  {
+    type: "🌍 MACRO × CRYPTO",
+    title: "The Fed Held Rates Again. Here's Why That's Quietly Bullish for Crypto in Q3",
+    meta: ["Jan 2025", "⏱ 5 min read", "Macro × Crypto"],
+    body: `
+      <p>The Federal Reserve held the federal funds rate at 5.25–5.50% for the fifth consecutive meeting. Markets yawned. But for crypto traders, the subtext matters more than the headline.</p>
+      <h4>The Rate Plateau Playbook</h4>
+      <p>When the Fed enters a prolonged pause — not cutting, but also done hiking — risk assets historically enter a quiet accumulation phase before the next leg up. The mechanism is straightforward: certainty about rate direction reduces volatility, lower volatility encourages risk-taking, risk appetite flows into growth assets, and crypto is at the far end of that spectrum.</p>
+      <div class="highlight">Look at 2019: BTC rallied 170% in a five-month window during a Fed pause that preceded rate cuts. The dynamic isn't identical today, but the structure rhymes.</div>
+      <h4>The Liquidity Signal</h4>
+      <p>Global M2 money supply has ticked up 3.2% over the past quarter, and dollar liquidity conditions — a historically reliable crypto price correlate — are loosening at the margins. When M2 expands and real rates are high but stable, capital looks for return. Crypto, particularly BTC, increasingly captures that flow.</p>
+      <p>The DXY (US Dollar Index) has also softened 2.1% from its recent peak. A weaker dollar historically correlates with BTC outperformance over 60–90 day windows. These aren't guarantees — they're macro tailwinds worth monitoring.</p>
+      <h4>What Could Break the Thesis</h4>
+      <p>A re-acceleration of CPI above 3.5% forcing the Fed back into hiking mode would reverse this setup quickly. Watch the August and September CPI prints. If inflation stays sticky, the rate plateau narrative breaks — and with it, this tailwind. For now, the macro backdrop is quietly supportive, and that's worth knowing even if it isn't a reason to go all-in.</p>
+    `
+  },
+  {
+    type: "⬡ DEFI DEEP-DIVE",
+    title: "Aave v3's Efficiency Mode Is Quietly Reshaping How DeFi Manages Collateral Risk",
+    meta: ["Dec 2024", "⏱ 8 min read", "DeFi Deep-Dive"],
+    body: `
+      <p>Aave v3's Efficiency Mode (eMode) allows users to borrow against correlated assets at loan-to-value ratios up to 97% — a number that would have sounded reckless in DeFi summer 2021.</p>
+      <h4>How eMode Works</h4>
+      <p>The key insight: if your collateral and debt are pegged to the same underlying asset, liquidation risk drops dramatically because they move together. Deposit stETH, borrow ETH — both track ETH price. If ETH drops 20%, your LTV barely changes. Traditional overcollateralized lending (70–80% LTV) was designed for uncorrelated assets. eMode removes that constraint for correlated pairs.</p>
+      <div class="highlight">This unlocks capital efficiency that was previously only available in centralized systems. A stETH holder can now leverage their position at 97% LTV while the protocol carries minimal liquidation risk — structurally.</div>
+      <h4>The Data</h4>
+      <p>Since launch, eMode has generated over $2.1B in utilization with a liquidation rate 4x lower than standard borrowing pools, per Dune Analytics. That's not an accident — it's a direct result of the correlation assumption holding. The strategy that dominates eMode usage is stETH/ETH leverage loops: deposit stETH, borrow ETH, swap to stETH, repeat. Essentially leveraged staking yield.</p>
+      <h4>Why This Matters Beyond Aave</h4>
+      <p>This isn't just a protocol optimization — it's a shift in how DeFi thinks about risk-adjusted capital efficiency. Euler, Morpho, and Spark have all built similar correlation-aware risk models. The insight that "not all collateral is equal" is spreading, and it's making DeFi lending more capital-efficient without increasing systemic risk. The next evolution is dynamic eMode categories that adjust LTV in real-time based on on-chain correlation data — that's where the design space gets interesting.</p>
+    `
+  },
+  {
+    type: "⚡ MARKET UPDATE",
+    title: "Daily Market Wrap: Altcoins Bleed as BTC Dominance Hits 58% — Key Levels to Watch",
+    meta: ["Ongoing series", "⏱ 2 min read", "Market Update"],
+    body: `
+      <p>BTC dominance pushed to 58.3% today — the highest level since early 2021 — as capital rotated out of mid-caps and into large-cap safety. Here's what moved, why it matters, and what to watch heading into tomorrow.</p>
+      <h4>What Happened</h4>
+      <p>SOL dropped 8.2% after Solana ecosystem outflows hit a three-week high on-chain — likely linked to a large wallet unwinding a meme coin position and triggering cascading sells in correlated assets. ETH held relatively firm at -3.1%, likely buoyed by persistent institutional ETF inflows that have averaged $180M/day over the past two weeks.</p>
+      <p>Mid-cap altcoins absorbed the brunt of the rotation. AVAX, INJ, and SEI all printed 10–14% declines on above-average volume. The pattern is consistent with early-cycle dominance expansion: BTC and ETH consolidate, alts correct, the narrative simplifies.</p>
+      <div class="highlight">Fear & Greed Index sits at 44 (Fear) — historically a zone where patient buyers have been rewarded over 3-month horizons. Not a buy signal by itself, but context worth having.</div>
+      <h4>Key Levels Tomorrow</h4>
+      <p>Total crypto market cap is testing the 21-day EMA at $2.18T. A daily close below that level opens the door to $2.05T, where the 50-day EMA sits and where significant buy-wall activity has clustered in previous corrections. BTC holding $62,000 on a closing basis would be the minimum bulls need to avoid a deeper flush. Set your alerts accordingly.</p>
+    `
+  },
+  {
+    type: "📊 SECTOR REPORT",
+    title: "State of the Restaking Sector: $15B TVL, Three Dominant Protocols, and an Emerging Systemic Risk",
+    meta: ["Nov 2024", "⏱ 10 min read", "Sector Report"],
+    body: `
+      <p>Restaking has grown from a conceptual whitepaper idea to a $15B+ sector in under 18 months. The premise is elegant: use already-staked ETH to secure additional protocols, earning layered yield. The risk is less elegant.</p>
+      <h4>The Market Structure</h4>
+      <p>Three protocols dominate: EigenLayer (68% share, $10.2B TVL), Symbiotic ($2.8B), and Karak ($1.1B). EigenLayer's first-mover advantage is structural — it built the AVS (Actively Validated Service) ecosystem that others are now copying, but without the developer network effects.</p>
+      <p>The incentive structure is working as designed: restakers earn ETH staking yield (3–4%) plus AVS service fees (variable, currently 1–3% annualised). For large ETH holders, it's essentially free yield on assets they were holding anyway. That's why TVL grew this fast.</p>
+      <div class="highlight">But here's the critical nuance: EigenLayer holds $10.2B TVL and has yet to enable live AVS slashing in production. Current restaking TVL is generating yield without carrying the actual risk it's supposed to be priced for.</div>
+      <h4>The Systemic Risk</h4>
+      <p>A slashing event on one Actively Validated Service could theoretically cascade through the underlying ETH stake. If an AVS is slashed and the restaked ETH backing it is partially destroyed, that loss flows back to the restaker — who may also have that ETH pledged as collateral elsewhere in DeFi. The interconnection is the risk.</p>
+      <p>When slashing goes live, we'll find out if the market has priced this risk correctly — or significantly underpriced it. The honest answer is that nobody knows yet, because it hasn't been stress-tested in production with real capital at stake.</p>
+      <h4>What to Watch</h4>
+      <p>EigenLayer's first live AVS slashing event will be a sector-defining moment. If it resolves cleanly, confidence in the model grows and TVL likely re-accelerates. If it triggers cascading liquidations across DeFi, expect a rapid repricing of restaking yield — and a very fast education in correlated risk.</p>
+    `
+  }
+];
+
+function openSampleModal(index) {
+  const s = writingSamples[index];
+  document.getElementById('modalType').textContent = s.type;
+  document.getElementById('modalTitle').textContent = s.title;
+  document.getElementById('modalMeta').innerHTML = s.meta.map(m => `<span>${m}</span>`).join('<span>·</span>');
+  document.getElementById('modalBody').innerHTML = s.body;
+  document.getElementById('modalFooterNote').textContent = 'Sample piece by Chirag Mehta / NM Alpha Research';
+  document.getElementById('sampleModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('sampleModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── REPORT TOGGLE ──────────────────────────────────────────────────────────────
 function toggleReport(embedId, btnId, filename) {
   const embed = document.getElementById(embedId);
   const btn   = document.getElementById(btnId);
   const frame = document.getElementById('frame-' + embedId);
   const isOpen = embed.classList.contains('open');
-
-  // Close all other open embeds first
   document.querySelectorAll('.report-embed.open').forEach(el => {
     if (el.id !== embedId) {
       el.classList.remove('open');
@@ -906,7 +1103,6 @@ function toggleReport(embedId, btnId, filename) {
       if (otherBtn) otherBtn.textContent = '▶ Open Report ↓';
     }
   });
-
   if (isOpen) {
     embed.classList.remove('open');
     frame.src = '';
@@ -915,20 +1111,75 @@ function toggleReport(embedId, btnId, filename) {
     embed.classList.add('open');
     frame.src = filename;
     btn.textContent = '✕ Close Report ↑';
-    // Smooth scroll to embed
     setTimeout(() => embed.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
   }
 }
 
-function toggleArticle(card) {
-  card.classList.toggle('expanded');
-  const btn = card.querySelector('.expand-btn');
-  btn.textContent = card.classList.contains('expanded') ? 'CLOSE ↑' : 'READ SAMPLE ↓';
-}
+// ── NAV ACTIVE STATE ───────────────────────────────────────────────────────────
 document.querySelectorAll('.nav-item').forEach(item => {
   item.addEventListener('click', () => {
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
     item.classList.add('active');
   });
 });
-document.querySelectorAll('.article-card, .skill-category, .tool-item, .metric-card, .x-card, .testimonial-card, .resource-card, .screenshot-card').forEach((
+document.querySelectorAll('.article-card, .skill-category, .tool-item, .metric-card, .x-card, .testimonial-card, .resource-card, .screenshot-card').forEach(el => {
+  el.addEventListener('mouseenter', () => el.style.willChange = 'transform');
+  el.addEventListener('mouseleave', () => el.style.willChange = 'auto');
+});
+
+// ── CRYPTO TICKER ─────────────────────────────────────────────────────────────
+async function loadCryptoTicker() {
+  try {
+    const [priceRes, fgRes] = await Promise.all([
+      fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true'),
+      fetch('https://api.alternative.me/fng/?limit=1')
+    ]);
+    const prices = await priceRes.json();
+    const fg = await fgRes.json();
+
+    const coins = [
+      { id: 'bitcoin', symbol: 'BTC', color: '#f0c040' },
+      { id: 'ethereum', symbol: 'ETH', color: '#a0b0ff' },
+      { id: 'solana', symbol: 'SOL', color: '#3df0a0' }
+    ];
+
+    const coinsHtml = coins.map(c => {
+      const d = prices[c.id];
+      if (!d) return '';
+      const price = d.usd >= 1000 ? '$' + d.usd.toLocaleString('en-US', {maximumFractionDigits: 0}) : '$' + d.usd.toLocaleString('en-US', {maximumFractionDigits: 2});
+      const change = d.usd_24h_change;
+      const changeStr = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+      const cls = change >= 0 ? 'up' : 'down';
+      return `<div class="ticker-coin">
+        <span class="ticker-coin-name" style="color:${c.color}">${c.symbol}</span>
+        <span class="ticker-coin-price">${price}</span>
+        <span class="ticker-coin-change ${cls}">${changeStr}</span>
+      </div>`;
+    }).join('');
+    document.getElementById('tickerCoins').innerHTML = coinsHtml;
+
+    if (fg.data && fg.data[0]) {
+      const score = parseInt(fg.data[0].value);
+      const text = fg.data[0].value_classification;
+      let barColor = '#3df0a0';
+      if (score < 25) barColor = '#f05050';
+      else if (score < 50) barColor = '#f0a040';
+      else if (score < 75) barColor = '#f0c040';
+      document.getElementById('fearGreedWidget').innerHTML = `
+        <span class="fear-greed-label">Fear & Greed</span>
+        <span class="fear-greed-score" style="color:${barColor}">${score}</span>
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <div class="fear-greed-bar"><div class="fear-greed-fill" style="width:${score}%;background:${barColor}"></div></div>
+          <span class="fear-greed-text" style="color:${barColor}">${text}</span>
+        </div>`;
+    }
+  } catch(e) {
+    document.getElementById('tickerCoins').innerHTML = '<span style="font-size:11px;color:var(--muted);font-family:\'DM Mono\',monospace;">Prices unavailable (CORS — use a deployed host)</span>';
+    document.getElementById('fearGreedWidget').innerHTML = '';
+  }
+}
+loadCryptoTicker();
+setInterval(loadCryptoTicker, 60000); // refresh every 60s
+</script>-e 
+</body>
+</html>
