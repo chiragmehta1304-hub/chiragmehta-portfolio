@@ -230,6 +230,138 @@
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: rgba(240,192,64,0.2); border-radius: 2px; }
+
+  /* ── RESEARCH REPORTS SECTION ── */
+  .reports-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .report-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .report-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .report-card.gold::before   { background: linear-gradient(90deg, #f0c040, transparent); }
+  .report-card.green::before  { background: linear-gradient(90deg, #3df0a0, transparent); }
+  .report-card.blue::before   { background: linear-gradient(90deg, #7080f0, transparent); }
+  .report-card.red::before    { background: linear-gradient(90deg, #f05050, transparent); }
+  .report-card.purple::before { background: linear-gradient(90deg, #c070f0, transparent); }
+  .report-card:hover::before  { transform: scaleX(1); }
+  .report-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+  .report-card.gold:hover  { border-color: rgba(240,192,64,0.25); }
+  .report-card.green:hover { border-color: rgba(61,240,160,0.25); }
+  .report-card.blue:hover  { border-color: rgba(112,128,240,0.25); }
+  .report-card.red:hover   { border-color: rgba(240,80,80,0.25); }
+  .report-card.purple:hover{ border-color: rgba(192,112,240,0.25); }
+
+  .report-header { padding: 24px 24px 0; }
+  .report-type-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .report-type {
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+    font-family: 'DM Mono', monospace; padding: 4px 12px;
+    border-radius: 100px;
+  }
+  .report-card.gold   .report-type { color: #f0c040; background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.2); }
+  .report-card.green  .report-type { color: #3df0a0; background: rgba(61,240,160,0.08); border: 1px solid rgba(61,240,160,0.2); }
+  .report-card.blue   .report-type { color: #7080f0; background: rgba(112,128,240,0.08); border: 1px solid rgba(112,128,240,0.2); }
+  .report-card.red    .report-type { color: #f05050; background: rgba(240,80,80,0.08); border: 1px solid rgba(240,80,80,0.2); }
+  .report-card.purple .report-type { color: #c070f0; background: rgba(192,112,240,0.08); border: 1px solid rgba(192,112,240,0.2); }
+
+  .report-date {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--muted); letter-spacing: 1px;
+  }
+  .report-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px; line-height: 1.35;
+    color: var(--text); margin-bottom: 10px;
+  }
+  .report-card > .report-header > p {
+    font-size: 12.5px; color: var(--muted); line-height: 1.65; margin-bottom: 16px;
+  }
+
+  .report-tags { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 24px 16px; }
+  .report-tag {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px;
+    padding: 3px 9px; border-radius: 6px;
+    background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+  }
+
+  .report-actions {
+    padding: 14px 24px 20px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  /* Toggle/Expand button */
+  .btn-toggle-report {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px;
+    padding: 8px 16px; border-radius: 7px; cursor: pointer;
+    border: none; transition: all 0.2s; flex: 1;
+    justify-content: center;
+  }
+  .report-card.gold   .btn-toggle-report { background: rgba(240,192,64,0.1);  color: #f0c040;  border: 1px solid rgba(240,192,64,0.25); }
+  .report-card.green  .btn-toggle-report { background: rgba(61,240,160,0.1);  color: #3df0a0;  border: 1px solid rgba(61,240,160,0.25); }
+  .report-card.blue   .btn-toggle-report { background: rgba(112,128,240,0.1); color: #7080f0;  border: 1px solid rgba(112,128,240,0.25); }
+  .report-card.red    .btn-toggle-report { background: rgba(240,80,80,0.1);   color: #f05050;  border: 1px solid rgba(240,80,80,0.25); }
+  .report-card.purple .btn-toggle-report { background: rgba(192,112,240,0.1); color: #c070f0;  border: 1px solid rgba(192,112,240,0.25); }
+  .btn-toggle-report:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+  .btn-fullscreen {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    padding: 8px 12px; border-radius: 7px; cursor: pointer;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); transition: all 0.2s; text-decoration: none;
+  }
+  .btn-fullscreen:hover { border-color: rgba(240,192,64,0.3); color: var(--accent); }
+
+  /* Embedded iframe viewer */
+  .report-embed {
+    display: none;
+    border-top: 1px solid var(--border);
+    height: 600px;
+    position: relative;
+  }
+  .report-embed.open { display: block; }
+  .report-embed iframe {
+    width: 100%; height: 100%; border: none;
+    background: #f6f4ef;
+  }
+  .embed-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+  .embed-toolbar-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .embed-close {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--muted); cursor: pointer; padding: 4px 10px;
+    border-radius: 5px; border: 1px solid var(--border);
+    background: transparent; transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .embed-close:hover { color: var(--accent); border-color: rgba(240,192,64,0.3); }
+
+  @media (max-width: 900px) {
+    .reports-grid { grid-template-columns: 1fr; }
+    .report-embed { height: 420px; }
+  }
 </style>
 </head>
 <body>
@@ -250,6 +382,7 @@
     <a href="#about" class="nav-item active"><span class="icon">◈</span> About</a>
     <a href="#proof" class="nav-item"><span class="icon">💹</span> Proof of Work</a>
     <a href="#social" class="nav-item"><span class="icon">𝕏</span> Social Presence</a>
+    <a href="#reports" class="nav-item"><span class="icon">📄</span> Research Reports</a>
     <a href="#writing" class="nav-item"><span class="icon">✦</span> Writing Samples</a>
     <a href="#onchain" class="nav-item"><span class="icon">⬡</span> On-Chain Analysis</a>
     <a href="#tools" class="nav-item"><span class="icon">▣</span> Tools & Stack</a>
@@ -257,7 +390,7 @@
     <a href="#contact" class="nav-item"><span class="icon">◌</span> Contact</a>
   </div>
   <div class="sidebar-footer">
-    <a href="mailto:chiragmehta1304@gmail.com" class="contact-link">✉ chiragmehta1304@gmail.com</a>
+    <a href="/cdn-cgi/l/email-protection#ccafa4a5beadaba1a9a4b8adfdfffcf88caba1ada5a0e2afa3a1" class="contact-link">✉ <span class="__cf_email__" data-cfemail="06656e6f7467616b636e72673735363246616b676f6a2865696b">[email&#160;protected]</span></a>
     <a href="https://www.linkedin.com/in/chiragmehta1304/" target="_blank" class="contact-link">⌘ LinkedIn</a>
     <a href="https://discord.gg/AS5eJkUven" target="_blank" class="contact-link">◈ Discord Community</a>
     <a href="https://x.com/NM_Founder" target="_blank" class="contact-link">𝕏 @NM_Founder</a>
@@ -451,6 +584,152 @@
     </div>
   </section>
 
+  <!-- RESEARCH REPORTS -->
+  <section class="section" id="reports">
+    <div class="section-header">
+      <div class="section-icon">📄</div>
+      <h2 class="section-title">Research Reports</h2>
+      <span class="section-count">4 reports</span>
+    </div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:28px;">Full-length institutional-style research reports produced under NM Alpha Research. Click <strong style="color:var(--accent)">Open Report ↓</strong> to read directly here, or <strong style="color:var(--accent)">⤢ Full Screen</strong> to open in a new tab.</p>
+
+    <div class="reports-grid">
+
+      <!-- REPORT 1 -->
+      <div class="report-card gold">
+        <div class="report-header">
+          <div class="report-type-row">
+            <span class="report-type">📊 On-Chain Analysis</span>
+            <span class="report-date">FEB 26, 2026</span>
+          </div>
+          <h3>Whale Accumulation vs Retail Distribution: What On-Chain Data Reveals About the Next Bitcoin Move</h3>
+          <p>A deep-dive into Glassnode's accumulation trend scores, NUPL, SOPR, MVRV Z-Score, and exchange flows — decoding the smart money vs. retail divergence during Bitcoin's 52% drawdown from $126K.</p>
+        </div>
+        <div class="report-tags">
+          <span class="report-tag">NUPL · 0.21</span>
+          <span class="report-tag">MVRV Z-Score</span>
+          <span class="report-tag">SOPR</span>
+          <span class="report-tag">Glassnode</span>
+          <span class="report-tag">Whale Cohorts</span>
+          <span class="report-tag">Exchange Flows</span>
+        </div>
+        <div class="report-actions">
+          <button class="btn-toggle-report" onclick="toggleReport('embed-whale','btn-whale','whale_accumulation_retail_distribution_chirag_mehta.html')" id="btn-whale">
+            ▶ Open Report ↓
+          </button>
+          <a class="btn-fullscreen" href="whale_accumulation_retail_distribution_chirag_mehta.html" target="_blank">⤢ Full Screen</a>
+        </div>
+        <div class="report-embed" id="embed-whale">
+          <div class="embed-toolbar">
+            <span class="embed-toolbar-label">📄 Whale Accumulation vs Retail Distribution · NM Alpha Research</span>
+            <button class="embed-close" onclick="toggleReport('embed-whale','btn-whale',null)">✕ Close</button>
+          </div>
+          <iframe id="frame-embed-whale" src="" loading="lazy" title="Whale Accumulation vs Retail Distribution Report"></iframe>
+        </div>
+      </div>
+
+      <!-- REPORT 2 -->
+      <div class="report-card blue">
+        <div class="report-header">
+          <div class="report-type-row">
+            <span class="report-type">🔄 Cycle Intelligence</span>
+            <span class="report-date">APR 2025</span>
+          </div>
+          <h3>The 2026 Crypto Cycle Playbook: A Data-Backed Framework for Navigating the Next Bull Market</h3>
+          <p>Seven frameworks covering Bitcoin price scenarios ($150K–$200K), altcoin rotation playbook, sector-by-sector breakdown (AI, RWA, L2), macro triggers, and a full NM portfolio allocation strategy.</p>
+        </div>
+        <div class="report-tags">
+          <span class="report-tag">BTC Price Scenarios</span>
+          <span class="report-tag">Alt Season</span>
+          <span class="report-tag">AI × Crypto</span>
+          <span class="report-tag">RWA</span>
+          <span class="report-tag">Macro</span>
+          <span class="report-tag">ETF Flows</span>
+        </div>
+        <div class="report-actions">
+          <button class="btn-toggle-report" onclick="toggleReport('embed-cycle','btn-cycle','crypto_cycle_playbook_2026_chirag_mehta.html')" id="btn-cycle">
+            ▶ Open Report ↓
+          </button>
+          <a class="btn-fullscreen" href="crypto_cycle_playbook_2026_chirag_mehta.html" target="_blank">⤢ Full Screen</a>
+        </div>
+        <div class="report-embed" id="embed-cycle">
+          <div class="embed-toolbar">
+            <span class="embed-toolbar-label">📄 2026 Crypto Cycle Playbook · NM Alpha Research</span>
+            <button class="embed-close" onclick="toggleReport('embed-cycle','btn-cycle',null)">✕ Close</button>
+          </div>
+          <iframe id="frame-embed-cycle" src="" loading="lazy" title="2026 Crypto Cycle Playbook Report"></iframe>
+        </div>
+      </div>
+
+      <!-- REPORT 3 -->
+      <div class="report-card green">
+        <div class="report-header">
+          <div class="report-type-row">
+            <span class="report-type">⚖️ Regulatory Analysis</span>
+            <span class="report-date">FEB 2026</span>
+          </div>
+          <h3>Stablecoins After the GENIUS Act: Who Wins, Who Loses, and What $306B Looks Like in 2026</h3>
+          <p>A comprehensive breakdown of the GENIUS Act's impact on USDT, USDC, USDe, and bank-issued stablecoins — with market cap scenarios, risk matrix, and infrastructure moat analysis.</p>
+        </div>
+        <div class="report-tags">
+          <span class="report-tag">GENIUS Act</span>
+          <span class="report-tag">USDC</span>
+          <span class="report-tag">Tether</span>
+          <span class="report-tag">Stablecoin $306B</span>
+          <span class="report-tag">Regulatory</span>
+          <span class="report-tag">Bank Tokens</span>
+        </div>
+        <div class="report-actions">
+          <button class="btn-toggle-report" onclick="toggleReport('embed-stable','btn-stable','stablecoins_genius_act_report_chirag_mehta.html')" id="btn-stable">
+            ▶ Open Report ↓
+          </button>
+          <a class="btn-fullscreen" href="stablecoins_genius_act_report_chirag_mehta.html" target="_blank">⤢ Full Screen</a>
+        </div>
+        <div class="report-embed" id="embed-stable">
+          <div class="embed-toolbar">
+            <span class="embed-toolbar-label">📄 Stablecoins After the GENIUS Act · NM Alpha Research</span>
+            <button class="embed-close" onclick="toggleReport('embed-stable','btn-stable',null)">✕ Close</button>
+          </div>
+          <iframe id="frame-embed-stable" src="" loading="lazy" title="Stablecoins GENIUS Act Report"></iframe>
+        </div>
+      </div>
+
+      <!-- REPORT 4 -->
+      <div class="report-card red">
+        <div class="report-header">
+          <div class="report-type-row">
+            <span class="report-type">🌍 Market Intelligence</span>
+            <span class="report-date">2025</span>
+          </div>
+          <h3>Crypto Market Intelligence Report: Sector Trends, Protocol Analysis &amp; Investment Thesis</h3>
+          <p>An institutional-grade market intelligence brief covering major sector trends, protocol fundamentals, tokenomics, and a structured investment thesis framework across DeFi, L1/L2 and emerging narratives.</p>
+        </div>
+        <div class="report-tags">
+          <span class="report-tag">Market Intelligence</span>
+          <span class="report-tag">Protocol Analysis</span>
+          <span class="report-tag">Tokenomics</span>
+          <span class="report-tag">DeFi</span>
+          <span class="report-tag">Investment Thesis</span>
+        </div>
+        <div class="report-actions">
+          <button class="btn-toggle-report" onclick="toggleReport('embed-crypto','btn-crypto','crypto_report_chirag_mehta.html')" id="btn-crypto">
+            ▶ Open Report ↓
+          </button>
+          <a class="btn-fullscreen" href="crypto_report_chirag_mehta.html" target="_blank">⤢ Full Screen</a>
+        </div>
+        <div class="report-embed" id="embed-crypto">
+          <div class="embed-toolbar">
+            <span class="embed-toolbar-label">📄 Crypto Market Intelligence Report · NM Alpha Research</span>
+            <button class="embed-close" onclick="toggleReport('embed-crypto','btn-crypto',null)">✕ Close</button>
+          </div>
+          <iframe id="frame-embed-crypto" src="" loading="lazy" title="Crypto Market Intelligence Report"></iframe>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
   <!-- WRITING SAMPLES -->
   <section class="section" id="writing">
     <div class="section-header"><div class="section-icon">✦</div><h2 class="section-title">Writing Samples</h2><span class="section-count">6 pieces</span></div>
@@ -599,7 +878,7 @@
     <h2>LET'S WORK TOGETHER</h2>
     <p>Available immediately for full-time remote roles</p>
     <div class="cta-buttons">
-      <a href="mailto:chiragmehta1304@gmail.com" class="btn-primary">✉ Send Me an Email</a>
+      <a href="/cdn-cgi/l/email-protection#513239382330363c343925306062616511363c30383d7f323e3c" class="btn-primary">✉ Send Me an Email</a>
       <a href="https://www.linkedin.com/in/chiragmehta1304/" target="_blank" class="btn-secondary">⌘ LinkedIn Profile</a>
       <a href="https://discord.gg/AS5eJkUven" target="_blank" class="btn-secondary" style="border-color:rgba(88,101,242,0.3); color:#7289da;">◈ Discord</a>
       <a href="https://x.com/NM_Founder" target="_blank" class="btn-x">𝕏 @NM_Founder</a>
@@ -610,7 +889,37 @@
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function toggleReport(embedId, btnId, filename) {
+  const embed = document.getElementById(embedId);
+  const btn   = document.getElementById(btnId);
+  const frame = document.getElementById('frame-' + embedId);
+  const isOpen = embed.classList.contains('open');
+
+  // Close all other open embeds first
+  document.querySelectorAll('.report-embed.open').forEach(el => {
+    if (el.id !== embedId) {
+      el.classList.remove('open');
+      const otherFrame = el.querySelector('iframe');
+      if (otherFrame) otherFrame.src = '';
+      const otherBtn = document.getElementById(el.id.replace('embed-','btn-'));
+      if (otherBtn) otherBtn.textContent = '▶ Open Report ↓';
+    }
+  });
+
+  if (isOpen) {
+    embed.classList.remove('open');
+    frame.src = '';
+    btn.textContent = '▶ Open Report ↓';
+  } else {
+    embed.classList.add('open');
+    frame.src = filename;
+    btn.textContent = '✕ Close Report ↑';
+    // Smooth scroll to embed
+    setTimeout(() => embed.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
+}
+
 function toggleArticle(card) {
   card.classList.toggle('expanded');
   const btn = card.querySelector('.expand-btn');
@@ -622,12 +931,4 @@ document.querySelectorAll('.nav-item').forEach(item => {
     item.classList.add('active');
   });
 });
-document.querySelectorAll('.article-card, .skill-category, .tool-item, .metric-card, .x-card, .testimonial-card, .resource-card, .screenshot-card').forEach((el, i) => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(16px)';
-  el.style.transition = `opacity 0.5s ease ${i * 0.03}s, transform 0.5s ease ${i * 0.03}s`;
-  setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 60 + i * 30);
-});
-</script>
-</body>
-</html>
+document.querySelectorAll('.article-card, .skill-category, .tool-item, .metric-card, .x-card, .testimonial-card, .resource-card, .screenshot-card').forEach((
