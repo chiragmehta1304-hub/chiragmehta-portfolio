@@ -736,16 +736,29 @@ body{background:var(--ink);font-family:'Outfit',sans-serif;color:var(--text);}
       <div class="cn">The inverse relationship is structural, not coincidental. When DXY peaked at 114.8 in Sept 2022, BTC was at its cycle low. Sources: TradingView, Bloomberg · NM Alpha model.</div>
     </div>
 
-    <!-- TradingView Embed: DXY vs BTC -->
+    <!-- TradingView Widget: DXY -->
     <div class="tv-wrap">
-      <div class="tv-lbl">📊 Live Chart: DXY vs BTC — TradingView · Open in new tab for full interaction</div>
-      <iframe
-        src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_dxy&symbol=TVC%3ADXY&interval=W&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=BTC%3ABITSTAMP&theme=light&style=3&timezone=exchange&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&utm_source=www.tradingview.com&utm_medium=widget_new&utm_campaign=chart&utm_term=TVC%3ADXY"
-        style="width:100%;height:400px;border:none;"
-        allowtransparency="true"
-        scrolling="no"
-        title="DXY TradingView Chart">
-      </iframe>
+      <div class="tv-lbl">📊 Live Chart: DXY (US Dollar Index) — Weekly · TradingView</div>
+      <div class="tradingview-widget-container" style="height:420px;">
+        <div class="tradingview-widget-container__widget" style="height:100%;"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+        {
+          "autosize": true,
+          "symbol": "TVC:DXY",
+          "interval": "W",
+          "timezone": "Etc/UTC",
+          "theme": "light",
+          "style": "1",
+          "locale": "en",
+          "hide_top_toolbar": false,
+          "hide_legend": false,
+          "allow_symbol_change": false,
+          "save_image": false,
+          "calendar": false,
+          "support_host": "https://www.tradingview.com"
+        }
+        </script>
+      </div>
     </div>
 
     <div class="rbox">
@@ -1002,28 +1015,54 @@ body{background:var(--ink);font-family:'Outfit',sans-serif;color:var(--text);}
       The DXY (US Dollar Index) is the single most important macro indicator for crypto price direction. When it goes up, crypto goes down — and vice versa. This relationship has held across every significant market cycle since 2017.
     </div>
 
-    <!-- Live TradingView: BTC -->
+    <!-- TradingView Widget: BTC/USD -->
     <div class="tv-wrap" style="margin-bottom:20px;">
       <div class="tv-lbl">📈 Bitcoin (BTC/USD) — Weekly Chart · TradingView Live</div>
-      <iframe
-        src="https://s.tradingview.com/widgetembed/?frameElementId=tv_btc&symbol=BITSTAMP%3ABTCUSD&interval=W&hidesidetoolbar=0&saveimage=1&theme=light&style=1&locale=en"
-        style="width:100%;height:380px;border:none;"
-        allowtransparency="true"
-        scrolling="no"
-        title="BTC/USD Weekly Chart">
-      </iframe>
+      <div class="tradingview-widget-container" style="height:400px;">
+        <div class="tradingview-widget-container__widget" style="height:100%;"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+        {
+          "autosize": true,
+          "symbol": "BITSTAMP:BTCUSD",
+          "interval": "W",
+          "timezone": "Etc/UTC",
+          "theme": "light",
+          "style": "1",
+          "locale": "en",
+          "hide_top_toolbar": false,
+          "hide_legend": false,
+          "allow_symbol_change": false,
+          "save_image": false,
+          "calendar": false,
+          "support_host": "https://www.tradingview.com"
+        }
+        </script>
+      </div>
     </div>
 
-    <!-- Live TradingView: DXY -->
+    <!-- TradingView Widget: DXY -->
     <div class="tv-wrap">
       <div class="tv-lbl">📉 DXY (US Dollar Index) — Weekly Chart · TradingView Live</div>
-      <iframe
-        src="https://s.tradingview.com/widgetembed/?frameElementId=tv_dxy&symbol=TVC%3ADXY&interval=W&hidesidetoolbar=0&saveimage=1&theme=light&style=1&locale=en"
-        style="width:100%;height:380px;border:none;"
-        allowtransparency="true"
-        scrolling="no"
-        title="DXY Weekly Chart">
-      </iframe>
+      <div class="tradingview-widget-container" style="height:400px;">
+        <div class="tradingview-widget-container__widget" style="height:100%;"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+        {
+          "autosize": true,
+          "symbol": "TVC:DXY",
+          "interval": "W",
+          "timezone": "Etc/UTC",
+          "theme": "light",
+          "style": "1",
+          "locale": "en",
+          "hide_top_toolbar": false,
+          "hide_legend": false,
+          "allow_symbol_change": false,
+          "save_image": false,
+          "calendar": false,
+          "support_host": "https://www.tradingview.com"
+        }
+        </script>
+      </div>
     </div>
 
     <div class="body" style="margin-top:20px;">
